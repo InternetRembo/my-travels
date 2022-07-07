@@ -1,22 +1,19 @@
 import { Box, CssBaseline, Grid, ThemeProvider } from "@mui/material";
-import React, { Dispatch, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/Header/Header";
 import PlaceDescription from "./components/PlacrDescription/PlaceDescription";
 import Map from "./components/Map/Map";
 import theme from "./common/theme";
-import { getPlacesData } from "./api";
-import { useDispatch } from "react-redux";
-import { GetPlacesAC, GetPlacesTC } from "./redux/mainPageReducer";
-import { AnyAction } from "redux";
-import { AppDispatch } from "./redux/redux-store";
+import { GetPlacesTC } from "./redux/mainPageReducer";
 import { useAppDispatch } from "./hooks/useAppDispatch";
 
 function App() {
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(GetPlacesTC());
+    dispatch(GetPlacesTC()).finally(() => setLoading(false));
   }, []);
 
   return (
@@ -27,7 +24,7 @@ function App() {
           <Header />
           <Grid container spacing={2} maxWidth="90vw" margin=" 0 auto">
             <Grid item xs={4}>
-              <PlaceDescription />
+              {loading ? "LOADING" : <PlaceDescription />}
             </Grid>
 
             <Grid item xs={8}>

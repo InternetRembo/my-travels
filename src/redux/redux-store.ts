@@ -1,13 +1,14 @@
-import { combineReducers, createStore, applyMiddleware } from "redux";
 import mainPageReducer from "./mainPageReducer";
-import thunkMiddleware from "redux-thunk";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
 let reducers = combineReducers({
   mainPageReducer: mainPageReducer,
 });
 
-let store = createStore(reducers, applyMiddleware(thunkMiddleware));
-
-export type RootState = ReturnType<typeof reducers>;
-export type AppDispatch = typeof store.dispatch;
+const store = configureStore({
+  reducer: reducers,
+});
 export default store;
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

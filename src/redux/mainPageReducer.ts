@@ -1,8 +1,5 @@
-import { useDispatch } from "react-redux";
 import { getPlacesData } from "../api";
-import { ThunkAction } from "redux-thunk";
-import { RootState } from "./redux-store";
-import { AnyAction, Dispatch } from "redux";
+import { Dispatch } from "redux";
 
 export interface stateType {
   searchQuery: string;
@@ -29,11 +26,11 @@ interface getPlacesAction {
   payload: any[];
 }
 
-type actionType = getSearchQueryAction | getPlacesAction; // сюди дописуємо всі інші інтерфейси з типами для екшенів
+type actionTypes = getSearchQueryAction | getPlacesAction; // сюди дописуємо всі інші інтерфейси з типами для екшенів
 
 const mainPageReducer = (
   state = initialState,
-  action: actionType
+  action: actionTypes
 ): stateType => {
   switch (action.type) {
     case typesOfAction.GET_SEARCH_QUERY:
@@ -46,23 +43,23 @@ const mainPageReducer = (
   }
 };
 
-export const GetSearchQueryAC = (value: string) => {
+export const GetSearchQueryAC = (value: string): getSearchQueryAction => {
+  //типи описуй, дібіл
   return {
     type: typesOfAction.GET_SEARCH_QUERY,
-    value,
+    payload: value,
   };
 };
-export const GetPlacesAC = (data: any[]) => {
+export const GetPlacesAC = (data: any[]): getPlacesAction => {
   return {
     type: typesOfAction.GET_PLACES,
     payload: data,
   };
 };
 
-export const GetPlacesTC =
-  () => async (dispatch: Dispatch<getPlacesAction>) => {
-    const placesData = await getPlacesData();
-    dispatch(GetPlacesAC(placesData));
-  };
+export const GetPlacesTC = () => async (dispatch: Dispatch<actionTypes>) => {
+  const placesData = await getPlacesData();
+  dispatch(GetPlacesAC(placesData));
+};
 
 export default mainPageReducer;
