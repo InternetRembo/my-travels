@@ -1,25 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Box, CssBaseline, Grid, ThemeProvider } from "@mui/material";
+import React, { Dispatch, useEffect, useState } from "react";
+import "./App.css";
+import Header from "./components/Header/Header";
+import PlaceDescription from "./components/PlacrDescription/PlaceDescription";
+import Map from "./components/Map/Map";
+import theme from "./common/theme";
+import { getPlacesData } from "./api";
+import { useDispatch } from "react-redux";
+import { GetPlacesAC, GetPlacesTC } from "./redux/mainPageReducer";
+import { AnyAction } from "redux";
+import { AppDispatch } from "./redux/redux-store";
+import { useAppDispatch } from "./hooks/useAppDispatch";
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(GetPlacesTC());
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Box>
+          <Header />
+          <Grid container spacing={2} maxWidth="90vw" margin=" 0 auto">
+            <Grid item xs={4}>
+              <PlaceDescription />
+            </Grid>
+
+            <Grid item xs={8}>
+              <Map />
+            </Grid>
+          </Grid>
+        </Box>
+      </ThemeProvider>
+    </React.Fragment>
   );
 }
 
